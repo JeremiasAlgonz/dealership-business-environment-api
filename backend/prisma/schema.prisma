@@ -1,0 +1,102 @@
+// This is my Prisma schema file,
+// learn more about Prisma in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//setup de models
+
+model Cliente {
+  id_cliente            Int                     @id @default(autoincrement())
+  tipoProprietario      TipoProprietario
+  nome                  String                  @db.VarChar(100)
+  cpf                   String?                 @unique @db.VarChar(14) // atributo facultativo ao tipo PESSOA_FISICA
+  cnpj                  String?                 @unique @db.VarChar(18) // atributo facultativo ao tipo PESSOA_JURIDICA
+  telefone              String                  @db.VarChar(16)
+  email                 String                  @db.VarChar(100)
+  // A relacao Cliente X Endereco ocorre no formato 1 -> 1
+  id_endereco           Int                     @unique
+  endereco              Endereco                @relation(fields: [id_endereco], references: [id_endereco])
+  // As relacoes Cliente X Concessionaria && Cliente X Motocicleta ocorre no formato 1 -> N
+  concessionarias       Concessionaria[]
+  motocicletas          Motocicleta[]
+  ClienteConcessionaria ClienteConcessionaria[]
+
+  @@map("Clientes")
+}
+
+model Concessionaria {
+  id_concessionaria     Int                     @id @default(autoincrement())
+  cnpj                  String                  @unique @db.VarChar(18)
+  nomeFantasia          String                  @db.VarChar(100)
+  telefone              String                  @db.VarChar(16)
+  email                 String                  @db.VarChar(100)
+  // A relacao Concessionaria X Endereco ocorre no formato 1 -> 1
+  id_endereco           Int                     @unique
+  endereco              Endereco                @relation(fields: [id_endereco], references: [id_endereco])
+  // A relacao Concessionaria X Motocicleta && Concessionaria X Cliente ocorre no formato 1 -> N
+  motocicletas          Motocicleta[]
+  clientes              Cliente[]
+  ClienteConcessionaria ClienteConcessionaria[]
+
+  @@map("Concessionarias")
+}
+
+model Motocicleta {
+  id_motocicleta    Int            @id @default(autoincrement())
+  renavam           Int
+  kilometragem      Decimal        @db.Decimal(6, 2)
+  placa             String?        @unique @db.VarChar(8) // atributo facultativo para o caso de veiculos 0 km
+  marca             String         @db.VarChar(20)
+  modelo            String         @db.VarChar(20)
+  anoFabricacao     Int
+  anoModelo         Int
+  potencia          Decimal        @db.Decimal(6, 2)
+  cor               String         @db.VarChar(15)
+  estado            Estado         @default(NOVO)
+  // A relacao Motocicleta X Concessionaria && Motocicleta X Cliente ocorre no formato 1 -> 1 com a nao obrigatoriedade de um proprietario:: cliente
+  id_concessionaria Int
+  clienteId_cliente Int? // atributo facultativo para o caso de veiculos 0 km
+  concessionaria    Concessionaria @relation(fields: [id_concessionaria], references: [id_concessionaria])
+  cliente           Cliente?       @relation(fields: [clienteId_cliente], references: [id_cliente])
+
+  @@map("Motocicletas")
+}
+
+model Endereco {
+  id_endereco    Int             @id @default(autoincrement())
+  logradouro     String          @db.VarChar(100)
+  numero         Int
+  complemento    String          @db.VarChar(50)
+  codigoPostal   String          @db.VarChar(10)
+  // A relacao Concessionaria X Endereco && Cliente X Endereco ocorre no formato 1 -> 1
+  Cliente        Cliente? // atributo facultativo ao tipo Cliente
+  Concessionaria Concessionaria? // atributo facultativo ao tipo Concessionaria
+}
+
+// Tabela para deixar explicita a relacao Cliente X Concessionaria de N -> N
+model ClienteConcessionaria {
+  id_clienteConcessionaria Int            @id @default(autoincrement())
+  id_cliente               Int
+  id_concessionaria        Int
+  cliente                  Cliente        @relation(fields: [id_cliente], references: [id_cliente])
+  concessionaria           Concessionaria @relation(fields: [id_concessionaria], references: [id_concessionaria])
+
+  @@map("Cliente_Concessionaria")
+}
+
+enum Estado {
+  NOVO
+  USADO
+}
+
+enum TipoProprietario {
+  PESSOA_FISICA
+  PESSOA_JURIDICA
+}
