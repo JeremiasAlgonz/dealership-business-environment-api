@@ -11,6 +11,7 @@ class EnderecoController {
             // recupera todas as concessionarias
             {
                 select: {
+                    id_endereco: true,
                     logradouro: true,
                     numero: true,
                     complemento: true,
@@ -105,3 +106,20 @@ class EnderecoController {
     }
 }
 export default EnderecoController;
+
+
+/*
+ ESTRUTURA POST -> BODY DA REQUISICAO
+
+JSON
+{
+  "logradouro":"rua da concessionaria",
+  "numero":92,
+  "complemento":"comercial I",
+  "codigoPostal":"12456-000",
+  "cliente": null,
+  "concessionaria": null
+}
+
+
+*/

@@ -58,7 +58,7 @@ class motocicletaController {
 
     async store(req: Request, res: Response) {
         const prisma = new PrismaClient();
-        const { renavam, kilometragem, placa, marca, modelo, anoFabricacao, anoModelo, potencia, cor, estado, concessionaria, cliente } = req.body; // Obter os dados nos parâmetros da rota
+        const { renavam, kilometragem, placa, marca, modelo, anoFabricacao, anoModelo, potencia, cor, estado, id_concessionaria } = req.body; // Obter os dados nos parâmetros da rota
         const novaMotocicleta = await prisma.motocicleta.create(
             {
                 data: {
@@ -72,8 +72,7 @@ class motocicletaController {
                     potencia: potencia,
                     cor: cor,
                     estado: estado,
-                    concessionaria,
-                    cliente
+                    concessionaria: { connect: { id_concessionaria } }
                 },
                 select: {
                     id_motocicleta: true,
@@ -97,7 +96,7 @@ class motocicletaController {
 
     async update(req: Request, res: Response) {
         const prisma = new PrismaClient();
-        const { renavam, kilometragem, placa, marca, modelo, anoFabricacao, anoModelo, potencia, cor, estado, concessionaria, cliente } = req.body; // Obter os dados nos parâmetros da rota assim como em Store
+        const { renavam, kilometragem, placa, marca, modelo, anoFabricacao, anoModelo, potencia, cor, estado } = req.body; // Obter os dados nos parâmetros da rota assim como em Store
         const motocicletaAlterada = await prisma.motocicleta.update(
             {
                 where: { id_motocicleta: Number(req.params.id) },
@@ -111,9 +110,7 @@ class motocicletaController {
                     anoModelo: anoModelo,
                     potencia: potencia,
                     cor: cor,
-                    estado: estado,
-                    concessionaria,
-                    cliente
+                    estado: estado
                 },
                 select: {
                     id_motocicleta: true,
@@ -145,3 +142,24 @@ class motocicletaController {
     }
 }
 export default motocicletaController;
+
+/*
+
+ESTRUTURA POST -> BODY DA REQUISICAO
+
+{
+    "renavam": "renavam",
+    "kilometragem": kilometragem,
+    "placa": placa,
+    "marca": marca,
+    "modelo": modelo,
+    "anoFabricacao": anoFabricacao,
+    "anoModelo": anoModelo,
+    "potencia": potencia,
+    "cor": cor,
+    "estado": estado,
+    "concessionaria":,
+    "cliente":
+}
+
+*/

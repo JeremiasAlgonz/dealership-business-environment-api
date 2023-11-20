@@ -8,7 +8,7 @@ class ClienteController {
     async list(req: Request, res: Response) {
         const prisma = new PrismaClient();
         const clientes = await prisma.cliente.findMany(
-            // recupera todas as concessionarias
+            // recupera todas os clientes
             {
                 select: {
                     id_cliente: true,
@@ -27,6 +27,7 @@ class ClienteController {
                         }
                     },
                     motocicletas: true,
+                    concessionarias: true,
                 }
             }
         );
@@ -64,7 +65,7 @@ class ClienteController {
 
     async store(req: Request, res: Response) {
         const prisma = new PrismaClient();
-        const { tipoProprietario, nome, cpf, cnpj, telefone, email, endereco } = req.body; // Obter os dados nos parâmetros da rota
+        const { tipoProprietario, nome, cpf, cnpj, telefone, email, id_endereco } = req.body; // Obter os dados nos parâmetros da rota
         const novoCliente = await prisma.cliente.create(
             {
                 data: {
@@ -74,7 +75,7 @@ class ClienteController {
                     cnpj: cnpj,
                     telefone: telefone,
                     email: email,
-                    endereco: endereco,
+                    endereco: { connect: { id_endereco } }, // associa o cliente ao endereco
                 },
                 select: {
                     tipoProprietario: true,
@@ -90,7 +91,7 @@ class ClienteController {
                             complemento: true,
                             codigoPostal: true
                         }
-                    }
+                    },
                 }
             }
         );
@@ -134,10 +135,28 @@ class ClienteController {
         const prisma = new PrismaClient();
         await prisma.cliente.delete(
             {
-                where: { id_cliente : Number(req.params.id) },
+                where: { id_cliente: Number(req.params.id) },
             }
         );
         res.status(200).json({ excluido: true });
     }
 }
 export default ClienteController;
+
+
+/*
+
+ ESTRUTURA POST -> BODY DA REQUISICAO
+
+ JSON
+ {
+  "tipoProprietario": "PESSOA_FISICA",
+  "nome": "Cliente da Silva",
+  "cpf": "123.456.789-12",
+  "telefone": "(13)91234-5678",
+  "email": "clientedasilva@email.com",
+ "id_endereco": 1
+}
+
+
+*/

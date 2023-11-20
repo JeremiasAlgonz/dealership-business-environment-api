@@ -50,6 +50,7 @@ model Concessionaria {
 
 model Motocicleta {
   id_motocicleta    Int            @id @default(autoincrement())
+  //TODO CHANGE THE TYPE INT INTO VARCHAR(11)
   renavam           Int
   kilometragem      Decimal        @db.Decimal(6, 2)
   placa             String?        @unique @db.VarChar(8) // atributo facultativo para o caso de veiculos 0 km

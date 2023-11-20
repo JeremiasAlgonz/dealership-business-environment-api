@@ -22,7 +22,7 @@ class ConcessionariaController {
                             complemento: true,
                             codigoPostal: true
                         }
-                    }
+                    },
                 }
             }
         );
@@ -47,7 +47,9 @@ class ConcessionariaController {
                             complemento: true,
                             codigoPostal: true
                         }
-                    }
+                    },
+                    motocicletas: true,
+                    clientes: true,
                 }
             }
         );
@@ -55,7 +57,7 @@ class ConcessionariaController {
     }
     async store(req: Request, res: Response) {
         const prisma = new PrismaClient();
-        const { cnpj, nomeFantasia, telefone, email, endereco } = req.body; // Obter os dados nos parâmetros da rota
+        const { cnpj, nomeFantasia, telefone, email, id_endereco } = req.body; // Obter os dados nos parâmetros da rota
         const novaConcessionaria = await prisma.concessionaria.create(
             {
                 data: {
@@ -63,7 +65,7 @@ class ConcessionariaController {
                     nomeFantasia: nomeFantasia,
                     telefone: telefone,
                     email: email,
-                    endereco: endereco
+                    endereco: { connect: { id_endereco } } // associa a concessionaria ao endereco correspondente
                 },
                 select: {
                     id_concessionaria: true,
@@ -128,3 +130,21 @@ class ConcessionariaController {
 }
 
 export default ConcessionariaController;
+
+
+/*
+ ESTRUTURA POST -> BODY DA REQUISICAO
+
+JSON
+{
+  "cnpj": "12.345.678/0001-00",
+  "nomeFantasia": "Concessionaria Alfa",
+  "telefone": "(13)91234-5678",
+  "email": "clientedasilva@email.com",
+ "id_endereco": 1
+}
+
+
+
+
+*/
