@@ -1,0 +1,35 @@
+@media screen and (min-width: 768px) {
+    .container .btn {
+        margin: 10px 10px 0px 0px;
+    }
+
+    .corpo {
+        border: 2px solid rgb(94, 107, 117);
+        margin: 20px;
+        padding: 10px;
+    }
+
+    .action {
+        display: flex;
+        margin: 10px;
+        justify-content: end;
+    }
+
+    h4 {
+        margin-top: 100px;
+    }
+
+
+
+}
+
+@media screen and (max-width: 767px) {
+
+    .container .btn {
+        display: flex;
+        margin: 20px 10px 0px 0px;
+        width: 30%;
+        justify-content: center !important;
+    }
+
+}

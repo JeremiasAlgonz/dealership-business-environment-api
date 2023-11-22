@@ -1,0 +1,17 @@
+
+
+
+
+|| BACKEND
+
+## SOFT DELETE para a tabela Concessionaria, Endereco e Cliente
+## TESTE ON DELETE CASCADE
+
+
+
+|| FRONTEND
+
+## Store, Update -> Concessionarias
+## Store, Update -> Clientes
+## Store, Update -> Motocicletas
+## Tratativa completa para enderecos -> INCLUIR TRATATIVA NO CREATE() DAS PÁGINAS
