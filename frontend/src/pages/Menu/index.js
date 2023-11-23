@@ -10,7 +10,10 @@ function Menu() {
                 </div>
                 <div className="nav-content">
                     <ul className="tabs tabs-transparent">
-                        <li className="tab selected"><Link to="/">Índice</Link></li>
+                        <li className="tab selected"><Link to="/">Início</Link></li>
+                        <li className="tab selected"><Link to="/concessionarias">Concessionarias</Link></li>
+                        <li className="tab selected"><Link to="/motocicletas">Motocicletas</Link></li>
+                        <li className="tab selected"><Link to="/clientes">Clientes</Link></li>
                         {/*}<li className="tab"><Link to="/computador">CRUD</Link></li>{*/}
                     </ul>
                 </div>

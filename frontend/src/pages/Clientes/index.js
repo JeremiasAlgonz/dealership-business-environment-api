@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axiosInstance from './../../services/api';
-import './style.css';
 import M from 'materialize-css';
 import { MdEdit, MdDelete } from "react-icons/md";
 
@@ -19,7 +18,7 @@ function Cliente() {
         } catch (error) {
             console.error(`Erro ao excluir o item com ID ${id}: ${error}`);
         }
-    }   
+    }
 
     useEffect(() => {
         async function Show() {
@@ -40,10 +39,11 @@ function Cliente() {
     return (
         <>
             <div className='container'>
-                <h4>Clientes</h4>
+                <h4 style={{marginTop: "10%"}}>Clientes</h4>
                 <table>
                     <thead>
                         <tr>
+                            <th>CNPJ</th>
                             <th>CPF</th>
                             <th>Nome</th>
                             <th>E-mail</th>
@@ -52,7 +52,24 @@ function Cliente() {
                     <tbody>
                         {json.map((cliente) => (
                             <tr key={cliente.id_cliente}>
-                                <td>{cliente.cpf}</td>
+                                <td>
+                                    {cliente.cnpj === "" || cliente.cnpj === null || cliente.cnpj === "null" ? (
+                                        <>-</>
+                                    ) : (
+                                        <>
+                                            {cliente.cnpj}
+                                        </>
+                                    )}
+                                </td>
+                                <td>
+                                    {cliente.cpf === "" || cliente.cpf === null || cliente.cpf === "null" ? (
+                                        <>-</>
+                                    ) : (
+                                        <>
+                                            {cliente.cpf}
+                                        </>
+                                    )}
+                                </td>
                                 <td>{cliente.nome}</td>
                                 <td>{cliente.email}</td>
                                 <td><Link to={"update/" + cliente.id_cliente} title="Editar"><MdEdit color='grey' /></Link></td>

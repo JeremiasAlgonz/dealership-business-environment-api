@@ -1,16 +1,16 @@
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, resolvePath } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import './style.css'
+import axiosInstance from '../../services/api';
 
-function Update() {
+function UpdateConcessionaria() {
 
     const [status, setStatus] = useState({});
     const { id } = useParams();
-    const [dados, setDados] = useState({nomeFantasia:"",cnpj:0.0});
+    const [endereco, setEndereco] = useState({ id_endereco: 0, logradouro: "", numero: 0, complemento: "", codigoPostal: "" });
+    const [dados, setDados] = useState({ nomeFantasia: "", cnpj: "", telefone: "", email: "", id_endereco: 0 });
     const navigate = useNavigate();
 
     // Código colocado no UseEffect é execucato após montagem deste componente
@@ -18,11 +18,12 @@ function Update() {
 
         async function consultar() {
             //Realiza consulta na API
-            const resposta = await axios.get(`http://localhost:4000/concessionarias/${id}`)
+            const resposta = await axiosInstance.get(`/concessionarias/${id}`)
                 // Armazena a resposta na variavel State
                 .then(resposta => {
                     setDados(resposta.data);
                     console.log(resposta); //Pressione F12 e no console veja o que veio da API no backend
+                    setEndereco(resposta.data.endereco); // tentativa de catch do id_endereco da requisicao, vai que cola xd
                 })
                 .catch(err => {
                     console.error('Falha na Consulta: ', err);
@@ -37,11 +38,24 @@ function Update() {
         <div className='container'>
             <h4>Alterar Registro:</h4>
             <form onSubmit={gravar} className='corpo'>
-                nomeFantasia: <input value={dados.nomeFantasia} type="text" required onChange={(e) => setDados({ ...dados, nomeFantasia: e.target.value })} />
-                Cnpj: <input value={dados.cnpj} type="number" step="0.01" required onChange={(e) => setDados({ ...dados, cnpj: e.target.value })} />
+                <h5>Dados da Concessionaria:</h5>
+                <br />
+                Nome Fantasia: <input value={dados.nomeFantasia} type="text" required onChange={(e) => setDados({ ...dados, nomeFantasia: e.target.value })} />
+                Cnpj: <input style={{ backgroundColor: '#fbe9e7' }} value={dados.cnpj} type="text" required onChange={(e) => setDados({ ...dados, cnpj: e.target.value })} title='CUIDADO! Informação sensível, altere apenas quando for necessario.' />
+                Telefone: <input value={dados.telefone} type="text" required onChange={(e) => setDados({ ...dados, telefone: e.target.value })} />
+                E-mail: <input value={dados.email} type="text" required onChange={(e) => setDados({ ...dados, email: e.target.value })} />
+
+                <br /><br />
+                <h5>Endereco:</h5>
+                <br />
+                Logradoro: <input value={endereco.logradouro} type="text" required onChange={(e) => setEndereco({ ...endereco, logradouro: e.target.value })} />
+                Numero: <input value={endereco.numero} type="number" required onChange={(e) => setEndereco({ ...endereco, numero: e.target.value })} />
+                Complemento: <input value={endereco.complemento} type="text" required onChange={(e) => setEndereco({ ...endereco, complemento: e.target.value })} />
+                CEP: <input value={endereco.codigoPostal} type="text" required onChange={(e) => setEndereco({ ...endereco, codigoPostal: e.target.value })} />
+                ID ENDERECO(somente leitura): <input value={endereco.id_endereco} type="number" readOnly />
                 <button type='submit' className="waves-effect waves-light btn">Salvar</button>
             </form>
-            <div className="action"><Link to='/computador' className="waves-effect red darken-4 btn">Cancelar</Link></div>
+            <div className="action"><Link to='/concessionarias' className="waves-effect red darken-4 btn">Cancelar</Link></div>
         </div>
     )
 
@@ -49,18 +63,30 @@ function Update() {
     async function gravar(e) {
         e.preventDefault(); // cancela o submit
         try {
-            // Chama função da API enviando o json com os dados do novo objeto
-            const resposta = await axios.put(`http://localhost:4000/concessionarias/${id}`, dados);
-            setStatus(resposta.data);
-            console.log(resposta); // pressione F12 e no console veja o que veio da API no backend
-            M.toast({html: 'Registro Alterado com sucesso!', classes: 'rounded amber lighten-2'});
+            // Atualizar dados da concessionária
+            const putDataConcessionaria = {
+                cnpj: dados.cnpj,
+                nomeFantasia: dados.nomeFantasia,
+                telefone: dados.telefone,
+                email: dados.email,
+                id_endereco: dados.endereco.id_endereco // Usando o ID do endereço obtido
+            }
+            const resConcessionaria = await axiosInstance.put(`/concessionarias/${id}`, putDataConcessionaria);
+            setStatus(resConcessionaria.data);
 
-            // Volta para a lista de computadores
-            navigate('/concessionaria');
+            // Atualizar endereço
+            const resEndereco = await axiosInstance.put(`/enderecos/${endereco.id_endereco}`, endereco);
+
+            console.log(resConcessionaria);
+            console.log(resEndereco);
+            M.toast({ html: 'Registro Alterado com sucesso!', classes: 'rounded amber lighten-2' });
+
+            // Retorna para a lista de concessionarias
+            navigate('/concessionarias');
         } catch (erro) {
             setStatus(`Falha: ${erro}`);
         }
     }
 
 }
-export default Update;
+export default UpdateConcessionaria;

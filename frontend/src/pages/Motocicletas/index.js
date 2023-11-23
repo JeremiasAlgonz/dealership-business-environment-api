@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axiosInstance from './../../services/api';
-import './style.css';
+//import './style.css';
 import M from 'materialize-css';
 import { MdEdit, MdDelete } from "react-icons/md";
 
@@ -40,11 +40,12 @@ function Motocicleta() {
     return (
         <>
             <div className='container'>
-                <h4>Motocicletas</h4>
+                <h4 style={{marginTop: "10%"}}>Motocicletas</h4>
                 <table>
                     <thead>
                         <tr>
                             <th>Renavam</th>
+                            <th>Fabricante</th>
                             <th>Modelo</th>
                             <th>Estado</th>
                         </tr>
@@ -53,6 +54,7 @@ function Motocicleta() {
                         {json.map((motocicleta) => (
                             <tr key={motocicleta.id_motocicleta}>
                                 <td>{motocicleta.renavam}</td>
+                                <td>{motocicleta.marca}</td>
                                 <td>{motocicleta.modelo}</td>
                                 <td>{motocicleta.estado}</td>
                                 <td><Link to={"update/" + motocicleta.id_motocicleta} title="Editar"><MdEdit color='grey' /></Link></td>

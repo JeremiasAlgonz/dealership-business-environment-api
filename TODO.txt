@@ -11,6 +11,4 @@
 
 || FRONTEND
 
-## Update -> Concessionarias
-## Update -> Clientes
-## Store, Update -> Motocicletas
+# Concat backend DELETE

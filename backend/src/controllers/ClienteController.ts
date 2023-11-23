@@ -20,6 +20,7 @@ class ClienteController {
                     email: true,
                     endereco: {
                         select: {
+                            id_endereco: true,
                             logradouro: true,
                             numero: true,
                             complemento: true,
@@ -49,6 +50,7 @@ class ClienteController {
                     email: true,
                     endereco: {
                         select: {
+                            id_endereco: true,
                             logradouro: true,
                             numero: true,
                             complemento: true,

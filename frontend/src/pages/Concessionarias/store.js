@@ -6,8 +6,6 @@ import 'materialize-css/dist/css/materialize.min.css';
 
 import StoreEndereco from '../../pages/Enderecos/store';
 
-import './style.css';
-
 function Store() {
     // Para apresentar ao usuáro o resultado da operação
     const [status, setStatus] = useState('');

@@ -42,6 +42,7 @@ class ConcessionariaController {
                     email: true,
                     endereco: {
                         select: {
+                            id_endereco: true,
                             logradouro: true,
                             numero: true,
                             complemento: true,

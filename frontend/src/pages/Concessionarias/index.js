@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axiosInstance from './../../services/api';
-import './style.css';
 import M from 'materialize-css';
 import { MdEdit, MdDelete } from "react-icons/md";
 
@@ -40,7 +39,7 @@ function Concessionaria() {
     return (
         <>
             <div className='container'>
-                <h4>Concessionarias</h4>
+                <h4 style={{marginTop: "10%"}}>Concessionarias</h4>
                 <table>
                     <thead>
                         <tr>

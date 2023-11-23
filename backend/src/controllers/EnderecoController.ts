@@ -30,6 +30,7 @@ class EnderecoController {
             {
                 where: { id_endereco: Number(req.params.id) },
                 select: {
+                    id_endereco: true,
                     logradouro: true,
                     numero: true,
                     complemento: true,

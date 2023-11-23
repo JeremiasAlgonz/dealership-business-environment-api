@@ -6,8 +6,6 @@ import 'materialize-css/dist/css/materialize.min.css';
 
 import StoreEndereco from '../../pages/Enderecos/store';
 
-import './style.css';
-
 function StoreCliente() {
     // Para apresentar ao usuáro o resultado da operação
     const [status, setStatus] = useState('');
@@ -16,7 +14,7 @@ function StoreCliente() {
     const [enderecoId, setEnderecoId] = useState(null);
 
     // Para armazenar dados digitados pelo usuário
-    const tipoProprietario = useRef(""); const nome = useRef("");
+    const [tipoProprietario, setTipoProprietario] = useState(""); const nome = useRef(""); const cnpj = useRef("");
     const cpf = useRef(""); const telefone = useRef(""); const email = useRef("");
 
     // Instancia objeto de navegacao para redirecionamento
@@ -42,23 +40,42 @@ function StoreCliente() {
                     <br /><h6>Etapa 2 &gt; DADOS DO CLIENTE</h6>
                     <form onSubmit={gravar} className='corpo'>
                         <label htmlFor="categoriaSelect">Categoria:</label>
-                        <select id="categoriaSelect" ref={tipoProprietario} required style={{ display: 'block', marginBottom: '10px' }}>
+                        <select id="categoriaSelect"
+                            required
+                            onChange={(e) => setTipoProprietario(e.target.value)}
+                            style={{ display: 'block', marginBottom: '10px' }}
+                        >
                             <option value="">Selecione</option>
                             <option value="PESSOA_FISICA">Pessoa Física</option>
                             <option value="PESSOA_JURIDICA">Pessoa Jurídica</option>
                         </select>
                         <br />
-                        CPF: <input ref={cpf} type="text" maxLength="15" required />
-                        Nome: <input ref={nome} type="text" maxLength="100" required />
-                        Telefone: <input ref={telefone} type="text" maxLength="16" required />
-                        E-mail: <input ref={email} type="text" maxLength="100" required />
-                        <button type='submit' className='waves-effect waves-light btn'>Cadastrar</button>
+                        {tipoProprietario === "PESSOA_JURIDICA" ? (
+                            <>
+                                CNPJ: <input ref={cnpj} type="text" maxLength="18" required />
+                                CPF: <input ref={cpf} type="text" maxLength="15" required disabled={true} style={{ backgroundColor: "#f5f5f5" }}/>
+                                Nome: <input ref={nome} type="text" maxLength="100" required />
+                                Telefone: <input ref={telefone} type="text" maxLength="16" required />
+                                E-mail: <input ref={email} type="text" maxLength="100" required />
+                            </>
+
+                        ) : (
+                            <>
+                                CNPJ: <input ref={cnpj} type="text" maxLength="15" required disabled={true} style={{ backgroundColor: "#f5f5f5" }} />
+                                CPF: <input ref={cpf} type="text" maxLength="15" required />
+                                Nome: <input ref={nome} type="text" maxLength="100" required />
+                                Telefone: <input ref={telefone} type="text" maxLength="16" required />
+                                E-mail: <input ref={email} type="text" maxLength="100" required />
+                            </>
+                        )}
+                        < button type='submit' className='waves-effect waves-light btn'>Cadastrar</button>
                     </form>
                 </div>
-            )}
+            )
+            }
             <div className="action"><Link to='/clientes' className="waves-effect red darken-4 btn">Cancelar</Link></div>
             <br />
-        </div>
+        </div >
     )
 
     // Chamada a função da API
@@ -68,7 +85,8 @@ function StoreCliente() {
 
         try {
             const clienteData = {
-                tipoProprietario: tipoProprietario.current.value,
+                tipoProprietario: tipoProprietario,
+                cnpj: cnpj.current.value,
                 cpf: cpf.current.value,
                 nome: nome.current.value,
                 telefone: telefone.current.value,
