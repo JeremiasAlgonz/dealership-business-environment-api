@@ -148,18 +148,19 @@ export default motocicletaController;
 ESTRUTURA POST -> BODY DA REQUISICAO
 
 {
-    "renavam": "renavam",
-    "kilometragem": kilometragem,
-    "placa": placa,
-    "marca": marca,
-    "modelo": modelo,
-    "anoFabricacao": anoFabricacao,
-    "anoModelo": anoModelo,
-    "potencia": potencia,
-    "cor": cor,
-    "estado": estado,
-    "concessionaria":,
-    "cliente":
+  "id_motocicleta": 2,
+  "renavam": "111111",
+  "kilometragem": "0",
+  "placa": "asd-1234",
+  "marca": "honda",
+  "modelo": "CG Titan",
+  "anoFabricacao": 2022,
+  "anoModelo": 2023,
+  "potencia": "160",
+  "cor": "Azul",
+  "estado": "NOVO",
+  "id_concessionaria": 1,
+  "cliente": null
 }
 
 */

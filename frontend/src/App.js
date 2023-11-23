@@ -12,7 +12,10 @@ import UpdateCliente from './pages/Clientes/update'
 import IndexMotocicleta from './pages/Motocicletas'
 import StoreMotocicleta from './pages/Motocicletas/store'
 import UpdateMotocicleta from './pages/Motocicletas/update'
-//import Delete from './Computador/delete';
+
+import StoreEndereco from './pages/Enderecos/store'
+//import UpdateEndereco from './pages/Enderecos/update'
+
 
 import NotFound from './pages/NotFound';
 
@@ -34,7 +37,8 @@ function App() {
         <Route path="/motocicletas/create" element={<StoreMotocicleta />} />
         <Route path="/motocicletas/update/:id" element={<UpdateMotocicleta />} />
 
-        {/*}<Route path="/computador/delete/:id" element={<Delete />} />{*/}
+        <Route path="/enderecos/create" element={<StoreEndereco />} />
+  
         {/* Rota de erro 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>

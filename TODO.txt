@@ -11,7 +11,6 @@
 
 || FRONTEND
 
-## Store, Update -> Concessionarias
-## Store, Update -> Clientes
+## Update -> Concessionarias
+## Update -> Clientes
 ## Store, Update -> Motocicletas
-## Tratativa completa para enderecos -> INCLUIR TRATATIVA NO CREATE() DAS PÁGINAS

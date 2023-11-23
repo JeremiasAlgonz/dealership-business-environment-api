@@ -57,6 +57,7 @@ class EnderecoController {
                     Concessionaria
                 },
                 select: {
+                    id_endereco: true,
                     logradouro: true,
                     numero: true,
                     complemento: true,
